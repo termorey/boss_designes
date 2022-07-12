@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="./source/style.css"/>
+    <script src="./source/spells.js"></script>
+
+</head>
+<body>
+    <div class="pages">
+        <span onclick="document.body.querySelector('div.page.info').classList.remove('active')">1</span>
+        <span onclick="document.body.querySelector('div.page.info').classList.add('active')">2</span>
+    </div>
+    <div class="page preview">
+        <div id="container" class="wrapper"></div>
+        <div class="directedBy"></div>
+        <button id="starter" class="button start" style="font-size: 1.1rem;">Приступить к просмотру</button>
+    </div>
+    <div class="page info">
+        <div id="infoContainer" class="wrapper">
+            <canvas class="spell" name="spell-1" width="400px" height="400px" style="border:2px solid black;">
+                Ваш браузер не поддерживает данный блок Canvas
+            </canvas>
+            <script>
+                // bossData['Миранда Сторм'].spells['аое навык'].animation(document.body.querySelectorAll('canvas.spell[NAME="spell-1"]')[0])
+            </script>
+        </div>
+    </div>
+</body>
+<script>
+    const delay = async (element, time) => { return setTimeout(() => {element()}, time) }
+    document.body.querySelector('#starter').addEventListener('click', async (e) => {
+        e.currentTarget.classList.add('hidden')
+        bossInfo.forEach((b,i) => {
+            document.body.querySelector('div.page.preview div#container').innerHTML = document.body.querySelector('div.page.preview div#container').innerHTML
+            + `<div class="item boss-${i} hidden" style="background-image: url('${b.logo}');"><div class="wrapper"><h2>${b.name}</h2><p>${b.story}</p><button name="${i}" class="button">Больше</button></div></div>`
+        })
+        for (let i=0; i<bossInfo.length; i++) {
+            await delay(() => {document.body.querySelectorAll('div.page.preview div#container div.item')[i].classList.remove('hidden')}, 500*i)
+        }
+
+        document.body.querySelectorAll('div.page.preview > div#container')[0].addEventListener('mouseleave', () => {
+            document.body.querySelector('div.page.preview').style.backgroundImage = null
+        })
+        document.body.querySelectorAll('div.page.preview > div#container > div.item').forEach((e,i) => {
+            e.querySelectorAll('button')[0].addEventListener('click', () => {
+                if (bossData[bossInfo[i].name]!==undefined) {
+                    document.body.querySelector('div.pages').classList.add('active')
+                    document.body.querySelector('div.page.info').style.backgroundImage = `url(${bossData[bossInfo[i].name].background})`
+                    document.body.querySelector('div.page.info').classList.add('active')
+                    let block = document.body.querySelector('div.page.info div#infoContainer')
+                    block.innerHTML = ''
+                    if (bossData[bossInfo[i].name].fullName) { block.innerHTML += `<h2>${bossData[bossInfo[i].name].fullName}</h2>` }
+                    if (bossData[bossInfo[i].name].description) {
+                        block.innerHTML += `<h3 style="margin-top: 3rem;">Особенности:</h3>`
+                        if (Array.isArray(bossData[bossInfo[i].name].description)) {
+                            block.innerHTML+= bossData[bossInfo[i].name].description.map(s => `<p class="description">${s}</p>`).join("<br/>")
+                        } else {
+                            block.innerHTML+= `<p class="description">${bossData[bossInfo[i].name].description}</p>`
+                        }
+                    }
+                    if (bossData[bossInfo[i].name].fullStory) {
+                        block.innerHTML += `<h3 style="margin-top: 3rem;">История:</h3>`
+                        if (Array.isArray(bossData[bossInfo[i].name].fullStory)) {
+                            block.innerHTML+= bossData[bossInfo[i].name].fullStory.map(s => `<p class="fullStory">${s}</p>`).join("<br/>")
+                        } else {
+                            block.innerHTML+= `<p class="fullStory">${bossData[bossInfo[i].name].fullStory}</p>`
+                        }
+                    }
+                    if (bossData[bossInfo[i].name].arena) {
+                        block.innerHTML += `<h3 style="margin-top: 3rem;">Арена/Локация:</h3>`
+                        block.innerHTML+= `<p class="arena">${bossData[bossInfo[i].name].arena}</p>`
+                    }
+                    if (bossData[bossInfo[i].name].battle) {
+                        block.innerHTML += `<h3 style="margin-top: 3rem;">Бой:</h3>`
+                        let text = bossData[bossInfo[i].name].battle
+                        block.innerHTML+= `<p class="battle">${text}</p>`
+                    }
+                    if (bossData[bossInfo[i].name].spells) {
+                        block.innerHTML += `<h3 style="margin-top: 3rem;">Навыки и описание:</h3>`
+                        let spells = bossData[bossInfo[i].name].spells
+                        spells = Object.keys(spells).map((s) => {
+                            return (
+                                `<div class="spell" name="spell:${s}">
+                                    <span>${s}</span>
+                                    <div>
+
+                                    </div>
+                                </div>`
+                            )
+                        })
+                        block.innerHTML+= `<p class="fullStory">${spells.join("")}</p>`
+                    }
+                }
+            })
+            e.addEventListener('mouseenter', (el) => {
+                document.body.querySelector('div.page.preview').style.backgroundImage = el.currentTarget.style.backgroundImage
+            })
+        })
+    })
+
+
+    const bossInfo = [
+        {
+            name: 'Мириэль',
+            logo: './source/static/maxresdefault.jpg',
+            story: 'Мириэль - последняя из своего рода. Её голос способен достучаться как до усопших в полночь, так и до самой чистой магии пламени в полдень.'
+        },
+        {
+            name: 'Братья Бергрунд',
+            logo: './source/static/scale_1200.webp',
+            story: 'Непризнанные на родине гении в своих областях. Впрочем это не помешало им стать величайшими авантюристами.'
+        },
+        {
+            name: 'Миранда Сторм',
+            logo: './source/static/jeremy-chong-art-milky-steam-engineer-steampunk-stimpank.jpg',
+            story: 'Свой первый корабль она потопила в 12, стала командиром эскадры в 16, высокий чин отца при флоте, и знаменитая фамилия, чего ещё желать? Но итоговый путь был избран не ей.'
+        }
+    ]
+</script>
+</html>

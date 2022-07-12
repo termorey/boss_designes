@@ -1,0 +1,241 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    overflow-y: hidden;
+}
+body * {
+    box-sizing: border-box;
+}
+body *::-webkit-scrollbar {
+    min-width: 7px;
+    width: .5%;
+    max-width: 50px;
+    min-height: 5px;
+    height: .5%;
+    max-height: 50px;
+}
+body::-webkit-scrollbar-button {
+    display: none;
+    background-color: #666;
+}
+body::-webkit-scrollbar-track {
+    background-color: #999;
+}
+body::-webkit-scrollbar-track-piece {
+    background-color: #ffffff;
+}
+body::-webkit-scrollbar-thumb {
+    height: 3%;
+    background-color: #666;
+    border-radius: .5rem;
+}
+body::-webkit-scrollbar-corner {
+    background-color: #999;
+}
+body::-webkit-resizer {
+    background-color: #666;
+}
+body *::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+body *::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+}
+body *::-webkit-scrollbar-thumb {
+    height: 3%;
+    background-color: #999;
+    border-radius: 0.25rem;
+}
+body *:hover::-webkit-scrollbar-thumb {
+    background-color: #666;
+}
+body *::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+body *::-webkit-resizer {
+    background-color: #666;
+}
+body > div.pages {
+    position: fixed;
+    top: 50%;
+    right: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1rem;
+    background: rgba(255,255,255,.7);
+    padding: 1rem;
+    border-radius: .5rem;
+    box-shadow: 0 .2rem .4rem 0 black;
+    transform: translate(-50%, -50%);
+    cursor: default;
+    z-index: 10;
+}
+body > div.pages.active {
+    right: 0;
+}
+body > div.pages span {
+    min-height: 2rem;
+    min-width: 2rem;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.2);
+    border-radius: .25rem;
+    cursor: pointer;
+}
+body > div.page {
+    height: 100%;
+    width: 100%;
+}
+button.button {
+    background: rgba(0,0,255,.5);
+    padding: 1rem;
+    border: .2rem solid rgba(0,0,255,.7);
+    border-radius: .5rem;
+    outline: none;
+    box-shadow: 0 .2rem .4rem 0 black;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+button.button:hover {
+    background: rgba(0,0,255,.6);
+    border: .2rem solid rgba(0,0,255,.5);
+    box-shadow: 0 .2rem .2rem 0 black;
+}
+button.button:active {
+    background: rgba(0,0,255,.7);
+    border: .2rem solid rgba(0,0,255,.4);
+    box-shadow: 0 .1rem .1rem 0 black;
+}
+button.start.hidden {
+    transform: translateY(1) scaleY(0);
+    opacity: 0;
+}
+
+div.page.preview {
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-content: space-around;
+    align-items: center;
+    background-image: url("./static/Index.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-size: cover;
+    transition: .5s;
+}
+div.page.preview > button.button#starter {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    background: rgba(255,255,255,.7);
+    border: .2rem solid rgba(0,0,255,.7);
+    color: black;
+    transform: translate(-50%, -100%);
+}
+div.page.preview > div.wrapper {
+    min-width: 700px;
+    width: 80%;
+    max-width: 900px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 2rem;
+}
+div.page.preview > div.wrapper > div.item {
+    flex: 3 1 200px;
+    min-height: 30vh;
+    background-attachment: scroll;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    border-radius: .5rem;
+    box-shadow: 0 .2rem .4rem 0 black;
+    opacity: 1;
+    transition: .5s;
+}
+div.page.preview > div.wrapper > div.item.hidden {
+    opacity: 0;
+    transform: translateY(20%);
+}
+div.page.preview > div.wrapper > div.item:hover {
+    box-shadow: 0 .2rem .4rem 0 rgb(255, 191, 88);
+}
+div.page.preview > div.wrapper > div.item > div.wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,.5);
+    padding: 1rem;
+    border-radius: inherit;
+    font-weight: bold;
+    color: white;
+    cursor: default;
+    transition: .3s;
+}
+div.page.preview > div.wrapper > div.item:hover > div.wrapper {
+    background: rgba(0,0,0,.9);
+}
+div.page.preview > div.wrapper > div.item > div.wrapper p {
+    padding: .5rem;
+    backdrop-filter: blur(1rem);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: .5rem;
+    word-break: break-word;
+}
+
+div.page.info {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: .5s;
+    z-index: 5;
+}
+div.page.info.active {
+    top: 0;
+}
+div.page.info > div#infoContainer {
+    max-height: 80%;
+    min-width: 600px;
+    width: 80%;
+    max-width: 800px;
+    background: rgba(255,255,255,.7);
+    padding: 2rem;
+    border-radius: .5rem;
+    backdrop-filter: blur(1rem);
+    box-shadow: 0 .2rem .4rem 0 black;
+    overflow-y: auto;
+    cursor: default;
+}
+
+div#infoContainer p {
+    padding-left: 1rem;
+    border-left: 2px solid red;
+}
